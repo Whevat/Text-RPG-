@@ -13,7 +13,7 @@ right = 5
 
 #Player Stats
 Phealth = 100
-Pattack = 10
+Pattack = 20
 Pdefense = 2.5
 def Player_Stats():
 	print(Phealth)
@@ -42,21 +42,32 @@ def Enemy_2_Stats():
 print(map)
 
 def Battle():
+	global Phealth
+	global Pattack
+	global Pdefense
+	global E2health
+	global E2attack
+	global E2defense
+	global E1attack
+	global E1defense
+	global E1health
 	print("An Enemy Approaches!")
 	binput = input(str("What will you do? (Fight or Run) "))
 	if binput == "fight":
 		print("You decide to fight the Enemy.")
 		x = 1
 		while x == 1:
+			print('Your Stats;')
 			Player_Stats()
+			print('Their Stats;')
 			Enemy_1_Stats()
 			finput = input(str("What will you do? (Attack or Defend) "))
 			if finput == "attack":
-				hit_chance = random.randint(1,2)
-				if hit_chance == 1:
+				hit_chance = random.randint(1,3)
+				if hit_chance == 1 or 3:
 					Edamage = E1defense - Pattack
-					E1health = E1health - Edamage
-					print(Edamage + " was delt!")
+					E1health = E1health + Edamage
+					print(str(Edamage) + " was delt!")
 				else:
 					print("You Missed!")
 				Eattack_chance = random.randint(1,2)
@@ -65,9 +76,19 @@ def Battle():
 					ehitchance = random.randint(1,2)
 					if ehitchance == 1:
 						Pdamage = Pdefense - E1attack
-						Phealth = Phealth - Pdamage
-						print('You were delt ' + Pdamage)
+						Phealth = Phealth + Pdamage
+						print('You were delt ' + str(Pdamage))
+					else:
+						print("They missed!")
+			if Phealth <= 0:
+				x = 0
+				print('You have fallen!')
+				os.exit()
+			elif E1health <= 0:
+				x = 0
+				print('The enemy has fallen!')
 
+					
 def other_input():
 	p = '.'
 	for x in range(4):
@@ -107,6 +128,7 @@ while x == 1:
 			print("Dead End")
 	if move != "right" or "left":
 		other_input()
-	if Phealth == 0:
+	if Phealth <= 0:
 		x = 0
-		Print('You Have Died')
+		print('You Have Died')
+		os.exit()
